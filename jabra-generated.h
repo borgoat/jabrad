@@ -177,6 +177,11 @@ struct _gbjDeviceIface
 {
   GTypeInterface parent_iface;
 
+
+  gboolean (*handle_get_firmware_version) (
+    gbjDevice *object,
+    GDBusMethodInvocation *invocation);
+
   guint16  (*get_device_id) (gbjDevice *object);
 
   const gchar * (*get_device_name) (gbjDevice *object);
@@ -195,6 +200,35 @@ GType gbj_device_get_type (void) G_GNUC_CONST;
 
 GDBusInterfaceInfo *gbj_device_interface_info (void);
 guint gbj_device_override_properties (GObjectClass *klass, guint property_id_begin);
+
+
+/* D-Bus method call completion functions: */
+void gbj_device_complete_get_firmware_version (
+    gbjDevice *object,
+    GDBusMethodInvocation *invocation,
+    const gchar *firmware_version);
+
+
+
+/* D-Bus method calls: */
+void gbj_device_call_get_firmware_version (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean gbj_device_call_get_firmware_version_finish (
+    gbjDevice *proxy,
+    gchar **out_firmware_version,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean gbj_device_call_get_firmware_version_sync (
+    gbjDevice *proxy,
+    gchar **out_firmware_version,
+    GCancellable *cancellable,
+    GError **error);
+
 
 
 /* D-Bus property accessors: */

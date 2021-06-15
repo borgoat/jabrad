@@ -1060,6 +1060,42 @@ gbj_manager_skeleton_new (void)
 
 /* ---- Introspection data for com.github.borgoat.Jabra1.Device ---- */
 
+static const _ExtendedGDBusArgInfo _gbj_device_method_info_get_firmware_version_OUT_ARG_firmware_version =
+{
+  {
+    -1,
+    (gchar *) "firmware_version",
+    (gchar *) "s",
+    NULL
+  },
+  FALSE
+};
+
+static const GDBusArgInfo * const _gbj_device_method_info_get_firmware_version_OUT_ARG_pointers[] =
+{
+  &_gbj_device_method_info_get_firmware_version_OUT_ARG_firmware_version.parent_struct,
+  NULL
+};
+
+static const _ExtendedGDBusMethodInfo _gbj_device_method_info_get_firmware_version =
+{
+  {
+    -1,
+    (gchar *) "GetFirmwareVersion",
+    NULL,
+    (GDBusArgInfo **) &_gbj_device_method_info_get_firmware_version_OUT_ARG_pointers,
+    NULL
+  },
+  "handle-get-firmware-version",
+  FALSE
+};
+
+static const GDBusMethodInfo * const _gbj_device_method_info_pointers[] =
+{
+  &_gbj_device_method_info_get_firmware_version.parent_struct,
+  NULL
+};
+
 static const _ExtendedGDBusPropertyInfo _gbj_device_property_info_device_id =
 {
   {
@@ -1160,7 +1196,7 @@ static const _ExtendedGDBusInterfaceInfo _gbj_device_interface_info =
   {
     -1,
     (gchar *) "com.github.borgoat.Jabra1.Device",
-    NULL,
+    (GDBusMethodInfo **) &_gbj_device_method_info_pointers,
     NULL,
     (GDBusPropertyInfo **) &_gbj_device_property_info_pointers,
     NULL
@@ -1215,6 +1251,7 @@ gbj_device_override_properties (GObjectClass *klass, guint property_id_begin)
 /**
  * gbjDeviceIface:
  * @parent_iface: The parent interface.
+ * @handle_get_firmware_version: Handler for the #gbjDevice::handle-get-firmware-version signal.
  * @get_device_id: Getter for the #gbjDevice:device-id property.
  * @get_device_name: Getter for the #gbjDevice:device-name property.
  * @get_is_dongle: Getter for the #gbjDevice:is-dongle property.
@@ -1231,6 +1268,29 @@ G_DEFINE_INTERFACE (gbjDevice, gbj_device, G_TYPE_OBJECT)
 static void
 gbj_device_default_init (gbjDeviceIface *iface)
 {
+  /* GObject signals for incoming D-Bus method calls: */
+  /**
+   * gbjDevice::handle-get-firmware-version:
+   * @object: A #gbjDevice.
+   * @invocation: A #GDBusMethodInvocation.
+   *
+   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.GetFirmwareVersion">GetFirmwareVersion()</link> D-Bus method.
+   *
+   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call gbj_device_complete_get_firmware_version() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
+   *
+   * Returns: %G_DBUS_METHOD_INVOCATION_HANDLED or %TRUE if the invocation was handled, %G_DBUS_METHOD_INVOCATION_UNHANDLED or %FALSE to let other signal handlers run.
+   */
+  g_signal_new ("handle-get-firmware-version",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (gbjDeviceIface, handle_get_firmware_version),
+    g_signal_accumulator_true_handled,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_BOOLEAN,
+    1,
+    G_TYPE_DBUS_METHOD_INVOCATION);
+
   /* GObject properties for D-Bus properties: */
   /**
    * gbjDevice:device-id:
@@ -1512,6 +1572,125 @@ void
 gbj_device_set_is_dongle (gbjDevice *object, gboolean value)
 {
   g_object_set (G_OBJECT (object), "is-dongle", value, NULL);
+}
+
+/**
+ * gbj_device_call_get_firmware_version:
+ * @proxy: A #gbjDeviceProxy.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
+ * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
+ * @user_data: User data to pass to @callback.
+ *
+ * Asynchronously invokes the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.GetFirmwareVersion">GetFirmwareVersion()</link> D-Bus method on @proxy.
+ * When the operation is finished, @callback will be invoked in the thread-default main loop of the thread you are calling this method from (see g_main_context_push_thread_default()).
+ * You can then call gbj_device_call_get_firmware_version_finish() to get the result of the operation.
+ *
+ * See gbj_device_call_get_firmware_version_sync() for the synchronous, blocking version of this method.
+ */
+void
+gbj_device_call_get_firmware_version (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data)
+{
+  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
+    "GetFirmwareVersion",
+    g_variant_new ("()"),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    callback,
+    user_data);
+}
+
+/**
+ * gbj_device_call_get_firmware_version_finish:
+ * @proxy: A #gbjDeviceProxy.
+ * @out_firmware_version: (out) (optional): Return location for return parameter or %NULL to ignore.
+ * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to gbj_device_call_get_firmware_version().
+ * @error: Return location for error or %NULL.
+ *
+ * Finishes an operation started with gbj_device_call_get_firmware_version().
+ *
+ * Returns: (skip): %TRUE if the call succeeded, %FALSE if @error is set.
+ */
+gboolean
+gbj_device_call_get_firmware_version_finish (
+    gbjDevice *proxy,
+    gchar **out_firmware_version,
+    GAsyncResult *res,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "(s)",
+                 out_firmware_version);
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
+ * gbj_device_call_get_firmware_version_sync:
+ * @proxy: A #gbjDeviceProxy.
+ * @out_firmware_version: (out) (optional): Return location for return parameter or %NULL to ignore.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Synchronously invokes the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.GetFirmwareVersion">GetFirmwareVersion()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
+ *
+ * See gbj_device_call_get_firmware_version() for the asynchronous version of this method.
+ *
+ * Returns: (skip): %TRUE if the call succeeded, %FALSE if @error is set.
+ */
+gboolean
+gbj_device_call_get_firmware_version_sync (
+    gbjDevice *proxy,
+    gchar **out_firmware_version,
+    GCancellable *cancellable,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
+    "GetFirmwareVersion",
+    g_variant_new ("()"),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "(s)",
+                 out_firmware_version);
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
+ * gbj_device_complete_get_firmware_version:
+ * @object: A #gbjDevice.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
+ * @firmware_version: Parameter to return.
+ *
+ * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.GetFirmwareVersion">GetFirmwareVersion()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
+ *
+ * This method will free @invocation, you cannot use it afterwards.
+ */
+void
+gbj_device_complete_get_firmware_version (
+    gbjDevice *object G_GNUC_UNUSED,
+    GDBusMethodInvocation *invocation,
+    const gchar *firmware_version)
+{
+  g_dbus_method_invocation_return_value (invocation,
+    g_variant_new ("(s)",
+                   firmware_version));
 }
 
 /* ------------------------------------------------------------------------ */

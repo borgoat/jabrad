@@ -8,6 +8,8 @@
 #define OBJPATH(OBJECT)  OBJPATH_ROOT #OBJECT
 #define OBJPATH_MANAGER  OBJPATH(Manager)
 
+#define MAXLEN  256
+
 static gbjManager *mgrInterface;
 static GDBusObjectManagerServer *objectManager;
 
@@ -25,9 +27,20 @@ static void first_scan_cb() {
 
 static gchar *device_object_path(unsigned short deviceID) {
     gchar *buf = NULL;
-    buf = g_new (gchar, 256);
-    g_snprintf(buf, 255, "%s/%hu", OBJPATH_MANAGER, deviceID);
+    buf = g_new (gchar, MAXLEN+1);
+    g_snprintf(buf, MAXLEN, "%s/%hu", OBJPATH_MANAGER, deviceID);
     return buf;
+}
+
+static gboolean on_handle_get_firmware_version (gbjDevice               *d,
+                                                GDBusMethodInvocation   *invocation,
+                                                gpointer                 user_data)
+{
+    gchar *firmware_version = g_new(gchar, MAXLEN+1);
+    Jabra_GetFirmwareVersion(gbj_device_get_device_id(d), firmware_version, MAXLEN);
+    gbj_device_complete_get_firmware_version(d, invocation, firmware_version);
+    g_free(firmware_version);
+    return TRUE;
 }
 
 static void configure_device_with_device_info(gbjDevice *d, const Jabra_DeviceInfo *info) {
@@ -37,6 +50,11 @@ static void configure_device_with_device_info(gbjDevice *d, const Jabra_DeviceIn
     gbj_device_set_device_name      (d, info->deviceName);
     gbj_device_set_usb_device_path  (d, info->usbDevicePath);
     gbj_device_set_is_dongle        (d, info->isDongle);
+
+    g_signal_connect (d,
+                      "handle-get-firmware-version",
+                      G_CALLBACK (on_handle_get_firmware_version),
+                      NULL);
 }
 
 static void device_attached_cb(Jabra_DeviceInfo deviceInfo) {

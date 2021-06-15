@@ -4,7 +4,6 @@
 <node>
     <interface name="com.github.borgoat.Jabra1.Manager">
         <signal name="DeviceAttached">
-<!--            <arg type="o" name="device" />-->
             <arg type="s" name="device" />
         </signal>
         <signal name="DeviceRemoved">
@@ -12,6 +11,10 @@
         </signal>
     </interface>
     <interface name="com.github.borgoat.Jabra1.Device">
+        <method name="GetFirmwareVersion">
+            <arg name="firmware_version" type="s" direction="out" />
+        </method>
+
         <property name="device_id" type="q" access="read" />
         <property name="product_id" type="q" access="read" />
         <property name="vendor_id" type="q" access="read" />
