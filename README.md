@@ -1,3 +1,8 @@
+## Dependencies
+
+* [GIO](https://developer.gnome.org/gio/stable/)
+* [Jabra SDK Linux](https://developer.jabra.com/site/global/sdks/linux/index.gsp)
+
 ## Codegen
 
 ```shell
