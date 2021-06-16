@@ -10,8 +10,8 @@
 
 #define MAXLEN  256
 
-static gbjManager *mgrInterface;
-static GDBusObjectManagerServer *objectManager;
+static gbjManager *manager_interface;
+static GDBusObjectManagerServer *object_manager_server;
 
 
 static void first_scan_cb() {
@@ -64,8 +64,8 @@ static void device_attached_cb(Jabra_DeviceInfo deviceInfo) {
     GDBusObjectSkeleton *skeleton = g_dbus_object_skeleton_new(path);
 
     g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(skeleton), G_DBUS_INTERFACE_SKELETON(device));
-    g_dbus_object_manager_server_export(G_DBUS_OBJECT_MANAGER_SERVER(objectManager), skeleton);
-    gbj_manager_emit_device_attached(GBJ_MANAGER(mgrInterface), deviceInfo.deviceName);
+    g_dbus_object_manager_server_export(G_DBUS_OBJECT_MANAGER_SERVER(object_manager_server), skeleton);
+    gbj_manager_emit_device_attached(GBJ_MANAGER(manager_interface), deviceInfo.deviceName);
 
     g_free(path);
     Jabra_FreeDeviceInfo(deviceInfo);
@@ -73,19 +73,19 @@ static void device_attached_cb(Jabra_DeviceInfo deviceInfo) {
 
 static void device_removed_cb(unsigned short deviceID) {
     gchar *path = device_object_path(deviceID);
-    g_dbus_object_manager_server_unexport(G_DBUS_OBJECT_MANAGER_SERVER(objectManager), path);
-    gbj_manager_emit_device_removed(GBJ_MANAGER(mgrInterface), deviceID);
+    g_dbus_object_manager_server_unexport(G_DBUS_OBJECT_MANAGER_SERVER(object_manager_server), path);
+    gbj_manager_emit_device_removed(GBJ_MANAGER(manager_interface), deviceID);
 
     g_free(path);
 }
 
 static void on_name_acquired(GDBusConnection *connection, const gchar *name, gpointer user_data) {
-    objectManager = g_dbus_object_manager_server_new(OBJPATH_MANAGER);
-    g_dbus_object_manager_server_set_connection(objectManager, connection);
+    object_manager_server = g_dbus_object_manager_server_new(OBJPATH_MANAGER);
+    g_dbus_object_manager_server_set_connection(object_manager_server, connection);
 
-    mgrInterface = gbj_manager_skeleton_new();
+    manager_interface = gbj_manager_skeleton_new();
     GError *err = NULL;
-    if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(mgrInterface),
+    if (!g_dbus_interface_skeleton_export(G_DBUS_INTERFACE_SKELETON(manager_interface),
                                           connection,
                                           OBJPATH_MANAGER,
                                           &err)) {
