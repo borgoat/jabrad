@@ -29,32 +29,12 @@ typedef struct _gbjManagerIface gbjManagerIface;
 struct _gbjManagerIface
 {
   GTypeInterface parent_iface;
-
-  void (*device_attached) (
-    gbjManager *object,
-    const gchar *arg_device);
-
-  void (*device_removed) (
-    gbjManager *object,
-    guint16 arg_device_id);
-
 };
 
 GType gbj_manager_get_type (void) G_GNUC_CONST;
 
 GDBusInterfaceInfo *gbj_manager_interface_info (void);
 guint gbj_manager_override_properties (GObjectClass *klass, guint property_id_begin);
-
-
-/* D-Bus signal emissions functions: */
-void gbj_manager_emit_device_attached (
-    gbjManager *object,
-    const gchar *arg_device);
-
-void gbj_manager_emit_device_removed (
-    gbjManager *object,
-    guint16 arg_device_id);
-
 
 
 /* ---- */
@@ -178,6 +158,7 @@ struct _gbjDeviceIface
   GTypeInterface parent_iface;
 
 
+
   gboolean (*handle_get_firmware_version) (
     gbjDevice *object,
     GDBusMethodInvocation *invocation);
@@ -194,6 +175,11 @@ struct _gbjDeviceIface
 
   guint16  (*get_vendor_id) (gbjDevice *object);
 
+  void (*button_in_data_translated) (
+    gbjDevice *object,
+    guint arg_translated_in_data,
+    gboolean arg_button_in_data);
+
 };
 
 GType gbj_device_get_type (void) G_GNUC_CONST;
@@ -207,6 +193,14 @@ void gbj_device_complete_get_firmware_version (
     gbjDevice *object,
     GDBusMethodInvocation *invocation,
     const gchar *firmware_version);
+
+
+
+/* D-Bus signal emissions functions: */
+void gbj_device_emit_button_in_data_translated (
+    gbjDevice *object,
+    guint arg_translated_in_data,
+    gboolean arg_button_in_data);
 
 
 

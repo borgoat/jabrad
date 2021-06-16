@@ -166,76 +166,13 @@ _g_value_equal (const GValue *a, const GValue *b)
 
 /* ---- Introspection data for com.github.borgoat.Jabra1.Manager ---- */
 
-static const _ExtendedGDBusArgInfo _gbj_manager_signal_info_device_attached_ARG_device =
-{
-  {
-    -1,
-    (gchar *) "device",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
-static const GDBusArgInfo * const _gbj_manager_signal_info_device_attached_ARG_pointers[] =
-{
-  &_gbj_manager_signal_info_device_attached_ARG_device.parent_struct,
-  NULL
-};
-
-static const _ExtendedGDBusSignalInfo _gbj_manager_signal_info_device_attached =
-{
-  {
-    -1,
-    (gchar *) "DeviceAttached",
-    (GDBusArgInfo **) &_gbj_manager_signal_info_device_attached_ARG_pointers,
-    NULL
-  },
-  "device-attached"
-};
-
-static const _ExtendedGDBusArgInfo _gbj_manager_signal_info_device_removed_ARG_device_id =
-{
-  {
-    -1,
-    (gchar *) "device_id",
-    (gchar *) "q",
-    NULL
-  },
-  FALSE
-};
-
-static const GDBusArgInfo * const _gbj_manager_signal_info_device_removed_ARG_pointers[] =
-{
-  &_gbj_manager_signal_info_device_removed_ARG_device_id.parent_struct,
-  NULL
-};
-
-static const _ExtendedGDBusSignalInfo _gbj_manager_signal_info_device_removed =
-{
-  {
-    -1,
-    (gchar *) "DeviceRemoved",
-    (GDBusArgInfo **) &_gbj_manager_signal_info_device_removed_ARG_pointers,
-    NULL
-  },
-  "device-removed"
-};
-
-static const GDBusSignalInfo * const _gbj_manager_signal_info_pointers[] =
-{
-  &_gbj_manager_signal_info_device_attached.parent_struct,
-  &_gbj_manager_signal_info_device_removed.parent_struct,
-  NULL
-};
-
 static const _ExtendedGDBusInterfaceInfo _gbj_manager_interface_info =
 {
   {
     -1,
     (gchar *) "com.github.borgoat.Jabra1.Manager",
     NULL,
-    (GDBusSignalInfo **) &_gbj_manager_signal_info_pointers,
+    NULL,
     NULL,
     NULL
   },
@@ -283,8 +220,6 @@ gbj_manager_override_properties (GObjectClass *klass G_GNUC_UNUSED, guint proper
 /**
  * gbjManagerIface:
  * @parent_iface: The parent interface.
- * @device_attached: Handler for the #gbjManager::device-attached signal.
- * @device_removed: Handler for the #gbjManager::device-removed signal.
  *
  * Virtual table for the D-Bus interface <link linkend="gdbus-interface-com-github-borgoat-Jabra1-Manager.top_of_page">com.github.borgoat.Jabra1.Manager</link>.
  */
@@ -293,77 +228,8 @@ typedef gbjManagerIface gbjManagerInterface;
 G_DEFINE_INTERFACE (gbjManager, gbj_manager, G_TYPE_OBJECT)
 
 static void
-gbj_manager_default_init (gbjManagerIface *iface)
+gbj_manager_default_init (gbjManagerIface *iface G_GNUC_UNUSED)
 {
-  /* GObject signals for received D-Bus signals: */
-  /**
-   * gbjManager::device-attached:
-   * @object: A #gbjManager.
-   * @arg_device: Argument.
-   *
-   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-com-github-borgoat-Jabra1-Manager.DeviceAttached">"DeviceAttached"</link> is received.
-   *
-   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
-   */
-  g_signal_new ("device-attached",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (gbjManagerIface, device_attached),
-    NULL,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_NONE,
-    1, G_TYPE_STRING);
-
-  /**
-   * gbjManager::device-removed:
-   * @object: A #gbjManager.
-   * @arg_device_id: Argument.
-   *
-   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-com-github-borgoat-Jabra1-Manager.DeviceRemoved">"DeviceRemoved"</link> is received.
-   *
-   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
-   */
-  g_signal_new ("device-removed",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (gbjManagerIface, device_removed),
-    NULL,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_NONE,
-    1, G_TYPE_UINT);
-
-}
-
-/**
- * gbj_manager_emit_device_attached:
- * @object: A #gbjManager.
- * @arg_device: Argument to pass with the signal.
- *
- * Emits the <link linkend="gdbus-signal-com-github-borgoat-Jabra1-Manager.DeviceAttached">"DeviceAttached"</link> D-Bus signal.
- */
-void
-gbj_manager_emit_device_attached (
-    gbjManager *object,
-    const gchar *arg_device)
-{
-  g_signal_emit_by_name (object, "device-attached", arg_device);
-}
-
-/**
- * gbj_manager_emit_device_removed:
- * @object: A #gbjManager.
- * @arg_device_id: Argument to pass with the signal.
- *
- * Emits the <link linkend="gdbus-signal-com-github-borgoat-Jabra1-Manager.DeviceRemoved">"DeviceRemoved"</link> D-Bus signal.
- */
-void
-gbj_manager_emit_device_removed (
-    gbjManager *object,
-    guint16 arg_device_id)
-{
-  g_signal_emit_by_name (object, "device-removed", arg_device_id);
 }
 
 /* ------------------------------------------------------------------------ */
@@ -921,54 +787,6 @@ gbj_manager_skeleton_dbus_interface_flush (GDBusInterfaceSkeleton *_skeleton G_G
 {
 }
 
-static void
-_gbj_manager_on_signal_device_attached (
-    gbjManager *object,
-    const gchar *arg_device)
-{
-  gbjManagerSkeleton *skeleton = GBJ_MANAGER_SKELETON (object);
-
-  GList      *connections, *l;
-  GVariant   *signal_variant;
-  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
-
-  signal_variant = g_variant_ref_sink (g_variant_new ("(s)",
-                   arg_device));
-  for (l = connections; l != NULL; l = l->next)
-    {
-      GDBusConnection *connection = l->data;
-      g_dbus_connection_emit_signal (connection,
-        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "com.github.borgoat.Jabra1.Manager", "DeviceAttached",
-        signal_variant, NULL);
-    }
-  g_variant_unref (signal_variant);
-  g_list_free_full (connections, g_object_unref);
-}
-
-static void
-_gbj_manager_on_signal_device_removed (
-    gbjManager *object,
-    guint16 arg_device_id)
-{
-  gbjManagerSkeleton *skeleton = GBJ_MANAGER_SKELETON (object);
-
-  GList      *connections, *l;
-  GVariant   *signal_variant;
-  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
-
-  signal_variant = g_variant_ref_sink (g_variant_new ("(q)",
-                   arg_device_id));
-  for (l = connections; l != NULL; l = l->next)
-    {
-      GDBusConnection *connection = l->data;
-      g_dbus_connection_emit_signal (connection,
-        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "com.github.borgoat.Jabra1.Manager", "DeviceRemoved",
-        signal_variant, NULL);
-    }
-  g_variant_unref (signal_variant);
-  g_list_free_full (connections, g_object_unref);
-}
-
 static void gbj_manager_skeleton_iface_init (gbjManagerIface *iface);
 #if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38
 G_DEFINE_TYPE_WITH_CODE (gbjManagerSkeleton, gbj_manager_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,
@@ -1026,10 +844,8 @@ gbj_manager_skeleton_class_init (gbjManagerSkeletonClass *klass)
 }
 
 static void
-gbj_manager_skeleton_iface_init (gbjManagerIface *iface)
+gbj_manager_skeleton_iface_init (gbjManagerIface *iface G_GNUC_UNUSED)
 {
-  iface->device_attached = _gbj_manager_on_signal_device_attached;
-  iface->device_removed = _gbj_manager_on_signal_device_removed;
 }
 
 /**
@@ -1093,6 +909,52 @@ static const _ExtendedGDBusMethodInfo _gbj_device_method_info_get_firmware_versi
 static const GDBusMethodInfo * const _gbj_device_method_info_pointers[] =
 {
   &_gbj_device_method_info_get_firmware_version.parent_struct,
+  NULL
+};
+
+static const _ExtendedGDBusArgInfo _gbj_device_signal_info_button_in_data_translated_ARG_translated_in_data =
+{
+  {
+    -1,
+    (gchar *) "translated_in_data",
+    (gchar *) "u",
+    NULL
+  },
+  FALSE
+};
+
+static const _ExtendedGDBusArgInfo _gbj_device_signal_info_button_in_data_translated_ARG_button_in_data =
+{
+  {
+    -1,
+    (gchar *) "button_in_data",
+    (gchar *) "b",
+    NULL
+  },
+  FALSE
+};
+
+static const GDBusArgInfo * const _gbj_device_signal_info_button_in_data_translated_ARG_pointers[] =
+{
+  &_gbj_device_signal_info_button_in_data_translated_ARG_translated_in_data.parent_struct,
+  &_gbj_device_signal_info_button_in_data_translated_ARG_button_in_data.parent_struct,
+  NULL
+};
+
+static const _ExtendedGDBusSignalInfo _gbj_device_signal_info_button_in_data_translated =
+{
+  {
+    -1,
+    (gchar *) "ButtonInDataTranslated",
+    (GDBusArgInfo **) &_gbj_device_signal_info_button_in_data_translated_ARG_pointers,
+    NULL
+  },
+  "button-in-data-translated"
+};
+
+static const GDBusSignalInfo * const _gbj_device_signal_info_pointers[] =
+{
+  &_gbj_device_signal_info_button_in_data_translated.parent_struct,
   NULL
 };
 
@@ -1197,7 +1059,7 @@ static const _ExtendedGDBusInterfaceInfo _gbj_device_interface_info =
     -1,
     (gchar *) "com.github.borgoat.Jabra1.Device",
     (GDBusMethodInfo **) &_gbj_device_method_info_pointers,
-    NULL,
+    (GDBusSignalInfo **) &_gbj_device_signal_info_pointers,
     (GDBusPropertyInfo **) &_gbj_device_property_info_pointers,
     NULL
   },
@@ -1258,6 +1120,7 @@ gbj_device_override_properties (GObjectClass *klass, guint property_id_begin)
  * @get_product_id: Getter for the #gbjDevice:product-id property.
  * @get_usb_device_path: Getter for the #gbjDevice:usb-device-path property.
  * @get_vendor_id: Getter for the #gbjDevice:vendor-id property.
+ * @button_in_data_translated: Handler for the #gbjDevice::button-in-data-translated signal.
  *
  * Virtual table for the D-Bus interface <link linkend="gdbus-interface-com-github-borgoat-Jabra1-Device.top_of_page">com.github.borgoat.Jabra1.Device</link>.
  */
@@ -1290,6 +1153,27 @@ gbj_device_default_init (gbjDeviceIface *iface)
     G_TYPE_BOOLEAN,
     1,
     G_TYPE_DBUS_METHOD_INVOCATION);
+
+  /* GObject signals for received D-Bus signals: */
+  /**
+   * gbjDevice::button-in-data-translated:
+   * @object: A #gbjDevice.
+   * @arg_translated_in_data: Argument.
+   * @arg_button_in_data: Argument.
+   *
+   * On the client-side, this signal is emitted whenever the D-Bus signal <link linkend="gdbus-signal-com-github-borgoat-Jabra1-Device.ButtonInDataTranslated">"ButtonInDataTranslated"</link> is received.
+   *
+   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.
+   */
+  g_signal_new ("button-in-data-translated",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (gbjDeviceIface, button_in_data_translated),
+    NULL,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_NONE,
+    2, G_TYPE_UINT, G_TYPE_BOOLEAN);
 
   /* GObject properties for D-Bus properties: */
   /**
@@ -1572,6 +1456,23 @@ void
 gbj_device_set_is_dongle (gbjDevice *object, gboolean value)
 {
   g_object_set (G_OBJECT (object), "is-dongle", value, NULL);
+}
+
+/**
+ * gbj_device_emit_button_in_data_translated:
+ * @object: A #gbjDevice.
+ * @arg_translated_in_data: Argument to pass with the signal.
+ * @arg_button_in_data: Argument to pass with the signal.
+ *
+ * Emits the <link linkend="gdbus-signal-com-github-borgoat-Jabra1-Device.ButtonInDataTranslated">"ButtonInDataTranslated"</link> D-Bus signal.
+ */
+void
+gbj_device_emit_button_in_data_translated (
+    gbjDevice *object,
+    guint arg_translated_in_data,
+    gboolean arg_button_in_data)
+{
+  g_signal_emit_by_name (object, "button-in-data-translated", arg_translated_in_data, arg_button_in_data);
 }
 
 /**
@@ -2413,6 +2314,32 @@ gbj_device_skeleton_dbus_interface_flush (GDBusInterfaceSkeleton *_skeleton)
     _gbj_device_emit_changed (skeleton);
 }
 
+static void
+_gbj_device_on_signal_button_in_data_translated (
+    gbjDevice *object,
+    guint arg_translated_in_data,
+    gboolean arg_button_in_data)
+{
+  gbjDeviceSkeleton *skeleton = GBJ_DEVICE_SKELETON (object);
+
+  GList      *connections, *l;
+  GVariant   *signal_variant;
+  connections = g_dbus_interface_skeleton_get_connections (G_DBUS_INTERFACE_SKELETON (skeleton));
+
+  signal_variant = g_variant_ref_sink (g_variant_new ("(ub)",
+                   arg_translated_in_data,
+                   arg_button_in_data));
+  for (l = connections; l != NULL; l = l->next)
+    {
+      GDBusConnection *connection = l->data;
+      g_dbus_connection_emit_signal (connection,
+        NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "com.github.borgoat.Jabra1.Device", "ButtonInDataTranslated",
+        signal_variant, NULL);
+    }
+  g_variant_unref (signal_variant);
+  g_list_free_full (connections, g_object_unref);
+}
+
 static void gbj_device_skeleton_iface_init (gbjDeviceIface *iface);
 #if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38
 G_DEFINE_TYPE_WITH_CODE (gbjDeviceSkeleton, gbj_device_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,
@@ -2697,6 +2624,7 @@ gbj_device_skeleton_class_init (gbjDeviceSkeletonClass *klass)
 static void
 gbj_device_skeleton_iface_init (gbjDeviceIface *iface)
 {
+  iface->button_in_data_translated = _gbj_device_on_signal_button_in_data_translated;
   iface->get_device_id = gbj_device_skeleton_get_device_id;
   iface->get_product_id = gbj_device_skeleton_get_product_id;
   iface->get_vendor_id = gbj_device_skeleton_get_vendor_id;
