@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-project(jabractl C)
+project(jabrad C)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -10,6 +10,6 @@ include_directories(${GIO_INCLUDE_DIRS})
 link_directories(${GIO_LIBRARY_DIRS})
 add_definitions(${GIO_CFLAGS_OTHER})
 
-add_executable(jabractl main.c jabra-generated.c)
+add_executable(jabractl main.c dbus-gen.c handler-dbus.c handler-jabra.c utils.c)
 
 target_link_libraries(jabractl ${GIO_LIBRARIES} jabra)

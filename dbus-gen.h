@@ -6,8 +6,8 @@
  * LGPL linking clauses.
  */
 
-#ifndef __JABRA_GENERATED_H__
-#define __JABRA_GENERATED_H__
+#ifndef __DBUS_GEN_H__
+#define __DBUS_GEN_H__
 
 #include <gio/gio.h>
 
@@ -353,4 +353,4 @@ gbjDevice *gbj_device_skeleton_new (void);
 
 G_END_DECLS
 
-#endif /* __JABRA_GENERATED_H__ */
+#endif /* __DBUS_GEN_H__ */
