@@ -10,6 +10,6 @@ include_directories(${GIO_INCLUDE_DIRS})
 link_directories(${GIO_LIBRARY_DIRS})
 add_definitions(${GIO_CFLAGS_OTHER})
 
-add_executable(jabractl main.c dbus-gen.c handler-dbus.c handler-jabra.c utils.c)
+add_executable(jabractl main.c dbus-gen.c handler-dbus.c handler-jabra.c)
 
 target_link_libraries(jabractl ${GIO_LIBRARIES} jabra)

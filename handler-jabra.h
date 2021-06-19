@@ -4,6 +4,14 @@
 #include <jabra/Common.h>
 #include "handler-dbus.h"
 
+#define OBJPATH_ROOT     "/com/github/borgoat/Jabra1/"
+#define OBJPATH(OBJECT)  OBJPATH_ROOT #OBJECT
+#define OBJPATH_MANAGER  OBJPATH(Manager)
+#define MAXLEN  256
+
+extern gbjManager *manager_interface;
+extern GDBusObjectManagerServer *object_manager_server;
+
 /**
  * \brief Handler for Jabra_InitializeV2
  */

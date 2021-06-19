@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include "handler-jabra.h"
-#include "utils.h"
 
 void dbus_on_name_acquired(GDBusConnection *connection, const gchar *name, gpointer user_data) {
     object_manager_server = g_dbus_object_manager_server_new(OBJPATH_MANAGER);
