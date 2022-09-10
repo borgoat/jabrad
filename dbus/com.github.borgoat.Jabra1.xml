@@ -5,8 +5,18 @@
     <interface name="com.github.borgoat.Jabra1.Manager">
     </interface>
     <interface name="com.github.borgoat.Jabra1.Device">
+        <!-- Firmware -->
         <method name="GetFirmwareVersion">
             <arg name="firmware_version" type="s" direction="out" />
+        </method>
+
+        <!-- Bluetooth -->
+        <method name="SetBTPairing" />
+        <method name="StopBTPairing" />
+
+        <!-- Device search -->
+        <method name="GetSearchDeviceList">
+            <arg name="devices" type="a(sbay)" direction="out" />
         </method>
 
         <signal name="ButtonInDataTranslated">

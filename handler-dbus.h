@@ -1,6 +1,8 @@
 #ifndef JABRAD_HANDLER_DBUS_H
 #define JABRAD_HANDLER_DBUS_H
 
+#define G_LOG_USE_STRUCTURED
+#include <glib.h>
 #include <gio/gio.h>
 #include "dbus-gen.h"
 

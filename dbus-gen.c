@@ -906,9 +906,68 @@ static const _ExtendedGDBusMethodInfo _gbj_device_method_info_get_firmware_versi
   FALSE
 };
 
+static const _ExtendedGDBusMethodInfo _gbj_device_method_info_set_btpairing =
+{
+  {
+    -1,
+    (gchar *) "SetBTPairing",
+    NULL,
+    NULL,
+    NULL
+  },
+  "handle-set-btpairing",
+  FALSE
+};
+
+static const _ExtendedGDBusMethodInfo _gbj_device_method_info_stop_btpairing =
+{
+  {
+    -1,
+    (gchar *) "StopBTPairing",
+    NULL,
+    NULL,
+    NULL
+  },
+  "handle-stop-btpairing",
+  FALSE
+};
+
+static const _ExtendedGDBusArgInfo _gbj_device_method_info_get_search_device_list_OUT_ARG_devices =
+{
+  {
+    -1,
+    (gchar *) "devices",
+    (gchar *) "a(sbay)",
+    NULL
+  },
+  FALSE
+};
+
+static const GDBusArgInfo * const _gbj_device_method_info_get_search_device_list_OUT_ARG_pointers[] =
+{
+  &_gbj_device_method_info_get_search_device_list_OUT_ARG_devices.parent_struct,
+  NULL
+};
+
+static const _ExtendedGDBusMethodInfo _gbj_device_method_info_get_search_device_list =
+{
+  {
+    -1,
+    (gchar *) "GetSearchDeviceList",
+    NULL,
+    (GDBusArgInfo **) &_gbj_device_method_info_get_search_device_list_OUT_ARG_pointers,
+    NULL
+  },
+  "handle-get-search-device-list",
+  FALSE
+};
+
 static const GDBusMethodInfo * const _gbj_device_method_info_pointers[] =
 {
   &_gbj_device_method_info_get_firmware_version.parent_struct,
+  &_gbj_device_method_info_set_btpairing.parent_struct,
+  &_gbj_device_method_info_stop_btpairing.parent_struct,
+  &_gbj_device_method_info_get_search_device_list.parent_struct,
   NULL
 };
 
@@ -1114,6 +1173,9 @@ gbj_device_override_properties (GObjectClass *klass, guint property_id_begin)
  * gbjDeviceIface:
  * @parent_iface: The parent interface.
  * @handle_get_firmware_version: Handler for the #gbjDevice::handle-get-firmware-version signal.
+ * @handle_get_search_device_list: Handler for the #gbjDevice::handle-get-search-device-list signal.
+ * @handle_set_btpairing: Handler for the #gbjDevice::handle-set-btpairing signal.
+ * @handle_stop_btpairing: Handler for the #gbjDevice::handle-stop-btpairing signal.
  * @get_device_id: Getter for the #gbjDevice:device-id property.
  * @get_device_name: Getter for the #gbjDevice:device-name property.
  * @get_is_dongle: Getter for the #gbjDevice:is-dongle property.
@@ -1139,7 +1201,7 @@ gbj_device_default_init (gbjDeviceIface *iface)
    *
    * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.GetFirmwareVersion">GetFirmwareVersion()</link> D-Bus method.
    *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call gbj_device_complete_get_firmware_version() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
+   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call gbj_device_complete_get_firmware_version() or e.g. g_dbus_method_invocation_return_error() on it) and no other signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
    *
    * Returns: %G_DBUS_METHOD_INVOCATION_HANDLED or %TRUE if the invocation was handled, %G_DBUS_METHOD_INVOCATION_UNHANDLED or %FALSE to let other signal handlers run.
    */
@@ -1147,6 +1209,72 @@ gbj_device_default_init (gbjDeviceIface *iface)
     G_TYPE_FROM_INTERFACE (iface),
     G_SIGNAL_RUN_LAST,
     G_STRUCT_OFFSET (gbjDeviceIface, handle_get_firmware_version),
+    g_signal_accumulator_true_handled,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_BOOLEAN,
+    1,
+    G_TYPE_DBUS_METHOD_INVOCATION);
+
+  /**
+   * gbjDevice::handle-set-btpairing:
+   * @object: A #gbjDevice.
+   * @invocation: A #GDBusMethodInvocation.
+   *
+   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.SetBTPairing">SetBTPairing()</link> D-Bus method.
+   *
+   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call gbj_device_complete_set_btpairing() or e.g. g_dbus_method_invocation_return_error() on it) and no other signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
+   *
+   * Returns: %G_DBUS_METHOD_INVOCATION_HANDLED or %TRUE if the invocation was handled, %G_DBUS_METHOD_INVOCATION_UNHANDLED or %FALSE to let other signal handlers run.
+   */
+  g_signal_new ("handle-set-btpairing",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (gbjDeviceIface, handle_set_btpairing),
+    g_signal_accumulator_true_handled,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_BOOLEAN,
+    1,
+    G_TYPE_DBUS_METHOD_INVOCATION);
+
+  /**
+   * gbjDevice::handle-stop-btpairing:
+   * @object: A #gbjDevice.
+   * @invocation: A #GDBusMethodInvocation.
+   *
+   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.StopBTPairing">StopBTPairing()</link> D-Bus method.
+   *
+   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call gbj_device_complete_stop_btpairing() or e.g. g_dbus_method_invocation_return_error() on it) and no other signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
+   *
+   * Returns: %G_DBUS_METHOD_INVOCATION_HANDLED or %TRUE if the invocation was handled, %G_DBUS_METHOD_INVOCATION_UNHANDLED or %FALSE to let other signal handlers run.
+   */
+  g_signal_new ("handle-stop-btpairing",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (gbjDeviceIface, handle_stop_btpairing),
+    g_signal_accumulator_true_handled,
+    NULL,
+    g_cclosure_marshal_generic,
+    G_TYPE_BOOLEAN,
+    1,
+    G_TYPE_DBUS_METHOD_INVOCATION);
+
+  /**
+   * gbjDevice::handle-get-search-device-list:
+   * @object: A #gbjDevice.
+   * @invocation: A #GDBusMethodInvocation.
+   *
+   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.GetSearchDeviceList">GetSearchDeviceList()</link> D-Bus method.
+   *
+   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call gbj_device_complete_get_search_device_list() or e.g. g_dbus_method_invocation_return_error() on it) and no other signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
+   *
+   * Returns: %G_DBUS_METHOD_INVOCATION_HANDLED or %TRUE if the invocation was handled, %G_DBUS_METHOD_INVOCATION_UNHANDLED or %FALSE to let other signal handlers run.
+   */
+  g_signal_new ("handle-get-search-device-list",
+    G_TYPE_FROM_INTERFACE (iface),
+    G_SIGNAL_RUN_LAST,
+    G_STRUCT_OFFSET (gbjDeviceIface, handle_get_search_device_list),
     g_signal_accumulator_true_handled,
     NULL,
     g_cclosure_marshal_generic,
@@ -1574,6 +1702,288 @@ _out:
 }
 
 /**
+ * gbj_device_call_set_btpairing:
+ * @proxy: A #gbjDeviceProxy.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
+ * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
+ * @user_data: User data to pass to @callback.
+ *
+ * Asynchronously invokes the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.SetBTPairing">SetBTPairing()</link> D-Bus method on @proxy.
+ * When the operation is finished, @callback will be invoked in the thread-default main loop of the thread you are calling this method from (see g_main_context_push_thread_default()).
+ * You can then call gbj_device_call_set_btpairing_finish() to get the result of the operation.
+ *
+ * See gbj_device_call_set_btpairing_sync() for the synchronous, blocking version of this method.
+ */
+void
+gbj_device_call_set_btpairing (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data)
+{
+  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
+    "SetBTPairing",
+    g_variant_new ("()"),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    callback,
+    user_data);
+}
+
+/**
+ * gbj_device_call_set_btpairing_finish:
+ * @proxy: A #gbjDeviceProxy.
+ * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to gbj_device_call_set_btpairing().
+ * @error: Return location for error or %NULL.
+ *
+ * Finishes an operation started with gbj_device_call_set_btpairing().
+ *
+ * Returns: (skip): %TRUE if the call succeeded, %FALSE if @error is set.
+ */
+gboolean
+gbj_device_call_set_btpairing_finish (
+    gbjDevice *proxy,
+    GAsyncResult *res,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "()");
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
+ * gbj_device_call_set_btpairing_sync:
+ * @proxy: A #gbjDeviceProxy.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Synchronously invokes the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.SetBTPairing">SetBTPairing()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
+ *
+ * See gbj_device_call_set_btpairing() for the asynchronous version of this method.
+ *
+ * Returns: (skip): %TRUE if the call succeeded, %FALSE if @error is set.
+ */
+gboolean
+gbj_device_call_set_btpairing_sync (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
+    "SetBTPairing",
+    g_variant_new ("()"),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "()");
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
+ * gbj_device_call_stop_btpairing:
+ * @proxy: A #gbjDeviceProxy.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
+ * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
+ * @user_data: User data to pass to @callback.
+ *
+ * Asynchronously invokes the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.StopBTPairing">StopBTPairing()</link> D-Bus method on @proxy.
+ * When the operation is finished, @callback will be invoked in the thread-default main loop of the thread you are calling this method from (see g_main_context_push_thread_default()).
+ * You can then call gbj_device_call_stop_btpairing_finish() to get the result of the operation.
+ *
+ * See gbj_device_call_stop_btpairing_sync() for the synchronous, blocking version of this method.
+ */
+void
+gbj_device_call_stop_btpairing (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data)
+{
+  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
+    "StopBTPairing",
+    g_variant_new ("()"),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    callback,
+    user_data);
+}
+
+/**
+ * gbj_device_call_stop_btpairing_finish:
+ * @proxy: A #gbjDeviceProxy.
+ * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to gbj_device_call_stop_btpairing().
+ * @error: Return location for error or %NULL.
+ *
+ * Finishes an operation started with gbj_device_call_stop_btpairing().
+ *
+ * Returns: (skip): %TRUE if the call succeeded, %FALSE if @error is set.
+ */
+gboolean
+gbj_device_call_stop_btpairing_finish (
+    gbjDevice *proxy,
+    GAsyncResult *res,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "()");
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
+ * gbj_device_call_stop_btpairing_sync:
+ * @proxy: A #gbjDeviceProxy.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Synchronously invokes the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.StopBTPairing">StopBTPairing()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
+ *
+ * See gbj_device_call_stop_btpairing() for the asynchronous version of this method.
+ *
+ * Returns: (skip): %TRUE if the call succeeded, %FALSE if @error is set.
+ */
+gboolean
+gbj_device_call_stop_btpairing_sync (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
+    "StopBTPairing",
+    g_variant_new ("()"),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "()");
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
+ * gbj_device_call_get_search_device_list:
+ * @proxy: A #gbjDeviceProxy.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
+ * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
+ * @user_data: User data to pass to @callback.
+ *
+ * Asynchronously invokes the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.GetSearchDeviceList">GetSearchDeviceList()</link> D-Bus method on @proxy.
+ * When the operation is finished, @callback will be invoked in the thread-default main loop of the thread you are calling this method from (see g_main_context_push_thread_default()).
+ * You can then call gbj_device_call_get_search_device_list_finish() to get the result of the operation.
+ *
+ * See gbj_device_call_get_search_device_list_sync() for the synchronous, blocking version of this method.
+ */
+void
+gbj_device_call_get_search_device_list (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data)
+{
+  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
+    "GetSearchDeviceList",
+    g_variant_new ("()"),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    callback,
+    user_data);
+}
+
+/**
+ * gbj_device_call_get_search_device_list_finish:
+ * @proxy: A #gbjDeviceProxy.
+ * @out_devices: (out) (optional): Return location for return parameter or %NULL to ignore.
+ * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to gbj_device_call_get_search_device_list().
+ * @error: Return location for error or %NULL.
+ *
+ * Finishes an operation started with gbj_device_call_get_search_device_list().
+ *
+ * Returns: (skip): %TRUE if the call succeeded, %FALSE if @error is set.
+ */
+gboolean
+gbj_device_call_get_search_device_list_finish (
+    gbjDevice *proxy,
+    GVariant **out_devices,
+    GAsyncResult *res,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "(@a(sbay))",
+                 out_devices);
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
+ * gbj_device_call_get_search_device_list_sync:
+ * @proxy: A #gbjDeviceProxy.
+ * @out_devices: (out) (optional): Return location for return parameter or %NULL to ignore.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Synchronously invokes the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.GetSearchDeviceList">GetSearchDeviceList()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
+ *
+ * See gbj_device_call_get_search_device_list() for the asynchronous version of this method.
+ *
+ * Returns: (skip): %TRUE if the call succeeded, %FALSE if @error is set.
+ */
+gboolean
+gbj_device_call_get_search_device_list_sync (
+    gbjDevice *proxy,
+    GVariant **out_devices,
+    GCancellable *cancellable,
+    GError **error)
+{
+  GVariant *_ret;
+  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
+    "GetSearchDeviceList",
+    g_variant_new ("()"),
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    cancellable,
+    error);
+  if (_ret == NULL)
+    goto _out;
+  g_variant_get (_ret,
+                 "(@a(sbay))",
+                 out_devices);
+  g_variant_unref (_ret);
+_out:
+  return _ret != NULL;
+}
+
+/**
  * gbj_device_complete_get_firmware_version:
  * @object: A #gbjDevice.
  * @invocation: (transfer full): A #GDBusMethodInvocation.
@@ -1592,6 +2002,63 @@ gbj_device_complete_get_firmware_version (
   g_dbus_method_invocation_return_value (invocation,
     g_variant_new ("(s)",
                    firmware_version));
+}
+
+/**
+ * gbj_device_complete_set_btpairing:
+ * @object: A #gbjDevice.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
+ *
+ * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.SetBTPairing">SetBTPairing()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
+ *
+ * This method will free @invocation, you cannot use it afterwards.
+ */
+void
+gbj_device_complete_set_btpairing (
+    gbjDevice *object G_GNUC_UNUSED,
+    GDBusMethodInvocation *invocation)
+{
+  g_dbus_method_invocation_return_value (invocation,
+    g_variant_new ("()"));
+}
+
+/**
+ * gbj_device_complete_stop_btpairing:
+ * @object: A #gbjDevice.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
+ *
+ * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.StopBTPairing">StopBTPairing()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
+ *
+ * This method will free @invocation, you cannot use it afterwards.
+ */
+void
+gbj_device_complete_stop_btpairing (
+    gbjDevice *object G_GNUC_UNUSED,
+    GDBusMethodInvocation *invocation)
+{
+  g_dbus_method_invocation_return_value (invocation,
+    g_variant_new ("()"));
+}
+
+/**
+ * gbj_device_complete_get_search_device_list:
+ * @object: A #gbjDevice.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
+ * @devices: Parameter to return.
+ *
+ * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-com-github-borgoat-Jabra1-Device.GetSearchDeviceList">GetSearchDeviceList()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
+ *
+ * This method will free @invocation, you cannot use it afterwards.
+ */
+void
+gbj_device_complete_get_search_device_list (
+    gbjDevice *object G_GNUC_UNUSED,
+    GDBusMethodInvocation *invocation,
+    GVariant *devices)
+{
+  g_dbus_method_invocation_return_value (invocation,
+    g_variant_new ("(@a(sbay))",
+                   devices));
 }
 
 /* ------------------------------------------------------------------------ */

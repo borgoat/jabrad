@@ -163,6 +163,18 @@ struct _gbjDeviceIface
     gbjDevice *object,
     GDBusMethodInvocation *invocation);
 
+  gboolean (*handle_get_search_device_list) (
+    gbjDevice *object,
+    GDBusMethodInvocation *invocation);
+
+  gboolean (*handle_set_btpairing) (
+    gbjDevice *object,
+    GDBusMethodInvocation *invocation);
+
+  gboolean (*handle_stop_btpairing) (
+    gbjDevice *object,
+    GDBusMethodInvocation *invocation);
+
   guint16  (*get_device_id) (gbjDevice *object);
 
   const gchar * (*get_device_name) (gbjDevice *object);
@@ -194,6 +206,19 @@ void gbj_device_complete_get_firmware_version (
     GDBusMethodInvocation *invocation,
     const gchar *firmware_version);
 
+void gbj_device_complete_set_btpairing (
+    gbjDevice *object,
+    GDBusMethodInvocation *invocation);
+
+void gbj_device_complete_stop_btpairing (
+    gbjDevice *object,
+    GDBusMethodInvocation *invocation);
+
+void gbj_device_complete_get_search_device_list (
+    gbjDevice *object,
+    GDBusMethodInvocation *invocation,
+    GVariant *devices);
+
 
 
 /* D-Bus signal emissions functions: */
@@ -220,6 +245,56 @@ gboolean gbj_device_call_get_firmware_version_finish (
 gboolean gbj_device_call_get_firmware_version_sync (
     gbjDevice *proxy,
     gchar **out_firmware_version,
+    GCancellable *cancellable,
+    GError **error);
+
+void gbj_device_call_set_btpairing (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean gbj_device_call_set_btpairing_finish (
+    gbjDevice *proxy,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean gbj_device_call_set_btpairing_sync (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GError **error);
+
+void gbj_device_call_stop_btpairing (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean gbj_device_call_stop_btpairing_finish (
+    gbjDevice *proxy,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean gbj_device_call_stop_btpairing_sync (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GError **error);
+
+void gbj_device_call_get_search_device_list (
+    gbjDevice *proxy,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean gbj_device_call_get_search_device_list_finish (
+    gbjDevice *proxy,
+    GVariant **out_devices,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean gbj_device_call_get_search_device_list_sync (
+    gbjDevice *proxy,
+    GVariant **out_devices,
     GCancellable *cancellable,
     GError **error);
 
